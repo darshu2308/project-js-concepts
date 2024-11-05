@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  
+<script>
+    const studentMarks = {
+    mathematics: 85,
+    science: 92,
+    english: 78
+};
+
+function calculateAverage(marks) {
+    let total = 0;
+    let count = 0;
+    
+    for(let mark in marks) {
+        total += marks[mark];
+        count++;
+    }
+    
+    return (total / count);
+}
+
+function createStudentReport(studentName, subjectsData) {
+    const { mathematics, science, english } = subjectsData;
+    const average = calculateAverage(subjectsData);
+    return {
+        name: studentName,
+        marks: {
+            mathematics,
+            science,
+            english
+        },
+        average
+    };
+}
+
+function generateReport(studentName, marks) {
+    return new Promise((resolve, reject) => {
+        if (!studentName || !marks) {
+            reject(new Error('Missing student information'));
+            return;
+        }
+
+        setTimeout(() => {
+            const report = createStudentReport(studentName, marks);
+            resolve(report);
+        }, 1000);
+    });
+}
+
+async function processStudentReport() {
+    try {
+        console.log('Processing student report...');
+        
+        const report = await generateReport('John Doe', studentMarks);
+        const { name, marks, average } = report;
+
+        console.log('\nStudent Report:');
+        console.log('==============');
+        console.log(`Name: ${name}`);
+        console.log(`\nAverage Score: ${average}`);
+
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
+}
+
+processStudentReport(); 
+</script>
+</body>
+</html>
